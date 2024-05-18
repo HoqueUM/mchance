@@ -1,0 +1,21 @@
+$shades-of-blue: (
+  #003366,
+);
+
+$color: nth($shades-of-blue, random(length($shades-of-blue)));
+
+.low-poly {
+    background: radial-gradient(ellipse at center, $color 0%, darken($color, 10%) 100%);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    .overlay-text {
+        position: absolute;
+        top: 90%;
+        left: 90%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+        z-index: 1;
+      }
+  }
