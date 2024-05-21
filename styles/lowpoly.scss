@@ -7,7 +7,7 @@ $color: nth($shades-of-blue, random(length($shades-of-blue)));
 .low-poly {
     background: radial-gradient(ellipse at center, $color 0%, darken($color, 10%) 100%);
     overflow: hidden;
-    width: 100vw;
+    width: 98.9vw;
     height: 100vh;
     .overlay-text {
         position: absolute;
