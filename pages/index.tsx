@@ -16,7 +16,7 @@ export default function Home() {
         <FindOut />
       </div>
     </div>
-    <div id='questions' className="h-screen flex justify-center items-center">
+    <div id='questions' className="h-screen flex justify-center items-center bg-[#00274C]">
       <Questions />
     </div>
     </main>
