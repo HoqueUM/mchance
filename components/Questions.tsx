@@ -1,77 +1,25 @@
 'use client';
 import React, { useState } from 'react';
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import GPA from './GPA';
+import Test from './Tests';
+import Michigan from './Michigan';
+import Income from './Income';
 
 const questions = [
-  {
-    text: 'GPA, please.',
-    type: 'text',
-    validate: (value: string) => {
-      const numberValue = parseFloat(value);
-      if (isNaN(numberValue)) {
-        return 'Input is not a number';
-      } else if (numberValue < 0.0 || numberValue > 6.0) {
-        return 'Input is not within the range [0.0, 6.0]';
-      } else {
-        return '';
-      }
-    }
-  },
-  {
-    text: 'SAT score, please.',
-    type: 'text',
-    validate: (value: string) => {
-      const numberValue = parseInt(value);
-      if (isNaN(numberValue)) {
-        return 'Input is not a number';
-      } else if (numberValue < 0 || numberValue > 1600) {
-        return 'Input is not within the range [0.0, 6.0]';
-      } else if (numberValue % 10 != 0) {
-        return 'Input is not a multiple of 10';
-      } else {
-        return '';
-      }
-    }
-  },
-  {
-    text: 'ACT score, please.',
-    type: 'text',
-    validate: (value: string) => {
-      const numberValue = parseInt(value);
-      if (isNaN(numberValue)) {
-        return 'Input is not a number';
-      } else if (numberValue < 0 || numberValue > 36) {
-        return 'Input is not within the range [0.0, 6.0]';
-      } else if (numberValue % 1 != 0) {
-        return 'Input is not a multiple of 1';
-      } else {
-        return '';
-      }
-    }
-  },
-  // Add more questions here
+  { component: GPA },
+  { component: Test },
+  { component: Michigan },
+  { component: Income },
 ];
 
 export default function Questions() {
-  const [inputValues, setInputValues] = useState(Array(questions.length).fill(''));
-  const [errorMessage, setErrorMessage] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newInputValues = [...inputValues];
-    newInputValues[currentQuestionIndex] = event.target.value;
-    setInputValues(newInputValues);
-    if (event.target.value === '') {
-      setErrorMessage('');
-    } else {
-      const error = questions[currentQuestionIndex].validate(event.target.value);
-      setErrorMessage(error);
-    }
-  };
+  const [responses, setResponses] = useState(Array(questions.length).fill(null));
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!errorMessage) {
+    if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
@@ -82,24 +30,27 @@ export default function Questions() {
     }
   };
 
+  const handleResponseChange = (index: number, response: any) => {
+    setResponses(prevResponses => {
+      const newResponses = [...prevResponses];
+      newResponses[index] = response;
+      return newResponses;
+    });
+  };
+
+  const CurrentComponent = questions[currentQuestionIndex].component;
+
   return (
     <div className="flex flex-col justify-center items-center">
-      <p>{questions[currentQuestionIndex].text}</p>
       <form onSubmit={handleSubmit}>
-        <input 
-          type={questions[currentQuestionIndex].type} 
-          value={inputValues[currentQuestionIndex]} 
-          onChange={handleInputChange}
-          className='text-black' 
-        />
+        <CurrentComponent onChange={response => handleResponseChange(currentQuestionIndex, response)} />
         {currentQuestionIndex > 0 && <button type="button" onClick={handleBack}><IoIosArrowBack /></button>}
         {currentQuestionIndex < questions.length - 1 ? (
-          <button type="submit" disabled={!inputValues[currentQuestionIndex] || !!errorMessage}><IoIosArrowForward /></button>
+          <button type="submit"><IoIosArrowForward /></button>
         ) : (
-          <button type="submit" disabled={!inputValues[currentQuestionIndex] || !!errorMessage}>Submit</button>
+          <button type="submit">Submit</button>
         )}
       </form>
-      {errorMessage && <p className="error-message text-red-500 text-center">{errorMessage}</p>}
     </div>
   );
 };

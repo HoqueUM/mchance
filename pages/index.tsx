@@ -1,9 +1,11 @@
+'use client';
 import Image from "next/image";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import BackgroundTriangles from '../components/lowpoly.jsx';
 import FindOut from '../components/ui/FindOut';
 import Questions from '../components/Questions';
+import Examples from '../components/Examples';
 
 export default function Home() {
   return (
