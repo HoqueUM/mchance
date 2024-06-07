@@ -2,16 +2,17 @@
 import React, { useState, useEffect } from 'react';
 
 interface IncomeProps {
+  value: string;
   onChange: (value: string) => void;
 }
 
-export default function Income({ onChange }: IncomeProps) {
-    const [value, setValue] = useState('');
+export default function Income({value: initialValue, onChange }: IncomeProps) {
+    const [value, setValue] = useState(initialValue ||'');
     const [error, setError] = useState('');
 
     useEffect(() => {
         onChange(value);
-    }, [value]);
+    }, [value, onChange]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;

@@ -1,0 +1,53 @@
+/* src/components/transitions.css */
+
+.fade-forward-enter {
+  opacity: 0;
+  transform: translateY(50%); /* Start below */
+  position: absolute;
+  width: 100%;
+}
+
+.fade-forward-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.fade-forward-exit {
+  opacity: 1;
+  transform: translateY(0);
+  position: absolute;
+  width: 100%;
+}
+
+.fade-forward-exit-active {
+  opacity: 0;
+  transform: translateY(-50%); /* Move up */
+  transition: opacity 500ms, transform 500ms;
+}
+
+.fade-backward-enter {
+  opacity: 0;
+  transform: translateY(-50%); /* Start above */
+  position: absolute;
+  width: 100%;
+}
+
+.fade-backward-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.fade-backward-exit {
+  opacity: 1;
+  transform: translateY(0);
+  position: absolute;
+  width: 100%;
+}
+
+.fade-backward-exit-active {
+  opacity: 0;
+  transform: translateY(50%); /* Move down */
+  transition: opacity 500ms, transform 500ms;
+}

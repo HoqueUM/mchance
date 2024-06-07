@@ -1,104 +1,62 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SAT from './SAT';
+import ACT from './ACT';
+import Both from './Both';
 
-function ACT() {
-    const [value, setValue] = useState('');
-    const [error, setError] = useState('');
-  
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = event.target.value;
-      const numberValue = parseFloat(inputValue);
-  
-      if (inputValue === '') {
-        setError('');
-      } else if (isNaN(numberValue)) {
-        setError('Input is not a number');
-      } else if (numberValue < 0 || numberValue > 36) {
-        setError('Input is not within the range [0, 36]');
-      } else if (numberValue % 1 !== 0) {
-        setError('Input is not a multiple of 1');
-      } else {
-        setError('');
-      }
-  
-      setValue(inputValue);
-    };
-    return (
-        <form>
-            <div>ACT Score?</div>
-            <input type="text" className="text-black" placeholder="Enter your ACT score" onChange={handleInputChange} 
-            value={value}/>
-            {error && <div className="error-message">{error}</div>}
-        </form>
-    );
-
+interface TestProps {
+  value: string;
+  onChange: (value: string) => void;
+  onTestTypeChange: (testType: string) => void; // New prop for notifying the parent component
 }
 
-function SAT() {
-    const [value, setValue] = useState('');
-    const [error, setError] = useState('');
-  
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = event.target.value;
-      const numberValue = parseFloat(inputValue);
-  
-      if (inputValue === '') {
-        setError('');
-      } else if (isNaN(numberValue)) {
-        setError('Input is not a number');
-      } else if (numberValue < 0 || numberValue > 1600) {
-        setError('Input is not within the range [0, 1600]');
-      } else if (numberValue % 10 !== 0) {
-        setError('Input is not a multiple of 10');
-      } else {
-        setError('');
-      }
-  
-      setValue(inputValue);
-    };
-    return (
-        <form>
-            <div>SAT Score?</div>
-            <input type="text" className="text-black" placeholder="Enter your SAT score" onChange={handleInputChange} 
-            value={value}/>
-            {error && <div className="error-message">{error}</div>}
-        </form>
-    );
+export default function Test({ value: initialValue, onChange, onTestTypeChange }: TestProps) {
+  const [testType, setTestType] = useState(initialValue || '');
+  const [satValue, setSatValue] = useState('');
+  const [actValue, setActValue] = useState('');
 
-}
+  useEffect(() => {
+    setTestType(initialValue || ''); // Rehydrate state from props
+  }, [initialValue]);
 
-function Both() {
-    return (
-        <div>
-            <SAT />
-            <ACT />
-        </div>
-    );
-}
+  useEffect(() => {
+    onChange(testType);
+    onTestTypeChange(testType); // Notify parent component about the change in test type
+  }, [testType, onChange, onTestTypeChange]);
 
-export default function Test() {
-    const [value, setValue] = useState('');
+  const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const inputValue = event.target.value;
+    setTestType(inputValue);
+  };
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const inputValue = event.target.value;
-        setValue(inputValue);
-    };
+  const handleSATChange = (value: string) => {
+    setSatValue(value);
+  };
 
-    return (
-        <form>
-            <div>Test?</div>
-            <select name="test" className="text-black" onChange={handleInputChange} value={value}>
-            <option value="">Select your test</option>
-            <option value="none">None</option>
-            <option value="sat">SAT Only</option>
-            <option value="act">ACT Only</option>
-            <option value="both">Both SAT and ACT</option>
-            </select>
-            {value === '' && <div></div>}
-            {value === 'none' && <div></div>}
-            {value === 'sat' && <SAT />}
-            {value === 'act' && <ACT />}
-            {value === 'both' && <Both />}
-        </form>
-    );
+  const handleACTChange = (value: string) => {
+    setActValue(value);
+  };
+
+  return (
+    <form>
+      <div>Test?</div>
+      <select name="test" className="text-black" onChange={handleInputChange} value={testType}>
+        <option value="">Select your test</option>
+        <option value="none">None</option>
+        <option value="sat">SAT Only</option>
+        <option value="act">ACT Only</option>
+        <option value="both">Both SAT and ACT</option>
+      </select>
+      {testType === 'sat' && <SAT value={satValue} onChange={handleSATChange} />}
+      {testType === 'act' && <ACT value={actValue} onChange={handleACTChange} />}
+      {testType === 'both' && (
+        <Both
+          satValue={satValue}
+          actValue={actValue}
+          onSATChange={handleSATChange}
+          onACTChange={handleACTChange}
+        />
+      )}
+    </form>
+  );
 }

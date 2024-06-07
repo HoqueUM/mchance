@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/lowpoly.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/lowpoly.jsx", "components/BG.jsx", "components/Questions.jsx"],
   "exclude": ["node_modules"]
 }

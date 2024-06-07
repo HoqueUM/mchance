@@ -1,14 +1,18 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 
-interface GPAProps {
+interface SATProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-export default function GPA({ value: initialValue, onChange }: GPAProps) {
+export default function SAT({ value: initialValue, onChange }: SATProps) {
   const [value, setValue] = useState(initialValue || '');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setValue(initialValue || ''); // Rehydrate state from props
+  }, [initialValue]);
 
   useEffect(() => {
     onChange(value);
@@ -22,8 +26,10 @@ export default function GPA({ value: initialValue, onChange }: GPAProps) {
       setError('');
     } else if (isNaN(numberValue)) {
       setError('Input is not a number');
-    } else if (numberValue < 0.0 || numberValue > 6.0) {
-      setError('Input is not within the range [0.0, 6.0]');
+    } else if (numberValue < 0 || numberValue > 1600) {
+      setError('Input is not within the range [0, 1600]');
+    } else if (numberValue % 10 !== 0) {
+      setError('Input is not a multiple of 10');
     } else {
       setError('');
     }
@@ -33,13 +39,13 @@ export default function GPA({ value: initialValue, onChange }: GPAProps) {
 
   return (
     <form>
-      <div>GPA?</div>
+      <div>SAT Score?</div>
       <input
         type="text"
         className="text-black"
-        placeholder="Enter your GPA"
-        value={value}
+        placeholder="Enter your SAT score"
         onChange={handleInputChange}
+        value={value}
       />
       {error && <div className="error-message">{error}</div>}
     </form>
