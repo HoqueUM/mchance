@@ -1,0 +1,25 @@
+{
+    "family": "ml-api-task",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+      {
+        "name": "ml-api-container",
+        "image": "891376914642.dkr.ecr.us-east-1.amazonaws.com/my-ml-api:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 80,
+            "hostPort": 80
+          }
+        ]
+      }
+    ],
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:ecs:us-east-2:891376914642:cluster/mchance-2"
+  }

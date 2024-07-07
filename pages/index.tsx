@@ -6,6 +6,7 @@ import FindOut from '../components/ui/FindOut';
 import Questions from '../components/Questions';
 import Examples from '../components/Examples';
 import Background from "@/components/BG.jsx";
+import QuestionsForm from "@/components/QuestionsForm";
 
 export default function Home() {
   return (
@@ -19,7 +20,7 @@ export default function Home() {
       </div>
     </div>
     <div id='questions' className="h-screen flex justify-center items-center bg-[#00274C]">
-      <Questions />
+      <QuestionsForm />
     </div>
     </main>
   );
