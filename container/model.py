@@ -11,7 +11,7 @@ import pickle
 df = pd.read_csv('public/feeder_schools.csv')
 
 # Select only the columns of interest
-selected_columns = ['State', 'Acceptance Rate', 'Mean SAT', 'Mean ACT', 'Median Income']
+selected_columns = ['School', 'State', 'Acceptance Rate', 'Mean SAT', 'Mean ACT', 'Median Income']
 df = df[selected_columns]
 
 # Separate features (X) and target variable (y)
@@ -22,8 +22,8 @@ y = df['Acceptance Rate']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Define the columns based on data types
-categorical_cols = ['State']
-quantitative_cols = ['Mean ACT', 'Mean SAT', 'Median Income']
+categorical_cols = ['State', 'School']
+quantitative_cols = ['Median Income']
 
 # Create transformers for preprocessing
 categorical_transformer = Pipeline(steps=[
@@ -52,5 +52,5 @@ model = Pipeline(steps=[
 model.fit(X_train, y_train)
 
 # Save the model as a pickle file
-with open('both.pkl', 'wb') as file:
+with open('no_tests.pkl', 'wb') as file:
     pickle.dump(model, file)
